@@ -74,12 +74,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddMapWindow.xaml.cs">
+      <DependentUpon>AddMapWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MapControl.xaml.cs">
       <DependentUpon>MapControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="SensorControl.xaml.cs">
       <DependentUpon>SensorControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="AddMapWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -94,5 +94,18 @@ namespace Settings
                 object dc = DataContext;
             }
         }
+
+        private void OpenAddMapWindow(object sender, RoutedEventArgs e)
+        {
+            AddMapWindow addMapWindow = new AddMapWindow();
+            addMapWindow.Owner = this;
+            addMapWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            addMapWindow.ShowDialog();
+            if (addMapWindow.DialogResult != true)
+                return;
+
+            MessageBox.Show(addMapWindow.FileName, addMapWindow.MapName);
+
+        }
     }
 }
