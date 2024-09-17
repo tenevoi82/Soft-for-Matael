@@ -39,9 +39,18 @@ namespace Settings.Data
             DependencyProperty.Register("Maps", typeof(ICollectionView), typeof(Settings.Data.Data), new PropertyMetadata(null));
 
 
-        public Data()
+
+
+        private void Reload()
         {
-            
+            _maps.Clear();
+            _maps = null;
+            Load();
+        }
+
+
+        public void Load()
+        {
             try
             {
                 using (var connection = new SQLiteConnection(@"Data Source=C:\Users\Dmitrii\Desktop\db.db"))
@@ -57,11 +66,10 @@ namespace Settings.Data
                             while (rdr.Read())
                             {
                                 _maps.Add(new Map(rdr.GetInt32(0))
-                                {                                    
+                                {
                                     MapName = rdr.GetString(1),
                                     Path = rdr.GetString(2)
                                 });
-
                             }
                         }
                     }
@@ -76,6 +84,33 @@ namespace Settings.Data
             }
         }
 
+        public Data()
+        {
+            Load();
+
+        }
+
+        public void AddMap(string FilePath, string MapName)
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(@"Data Source=C:\Users\Dmitrii\Desktop\db.db"))
+                {
+                    connection.Open();
+
+                    using (var cmd = new SQLiteCommand($@"INSERT INTO Maps ( Name, Path ) VALUES ( '{MapName}', '{FilePath}' );", connection))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                Reload();
+            }
+            catch (SQLiteException ex)
+            {
+                MessageBox.Show(ex.Message);
+                throw ex;
+            }
+        }
 
     }
 }

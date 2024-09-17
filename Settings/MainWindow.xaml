@@ -11,7 +11,7 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -19,16 +19,20 @@
 
         <Grid DataContext="{Binding Maps}">
             <Grid.RowDefinitions>
-                <RowDefinition/>
+                <RowDefinition />
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <ListView  ItemsSource="{Binding }" IsSynchronizedWithCurrentItem="True" Margin="10">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding MapName}" Margin="5"/>
-                            <Button Click="ChangeMap_Click" DataContext="{Binding CurrentItem}">Изменить</Button>
-                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding MapName}" Margin="5" Grid.Column="0"/>
+                            <Button Click="ChangeMap_Click" DataContext="{Binding }" Grid.Column="1" HorizontalAlignment="Right">Изменить</Button>
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -36,26 +40,32 @@
                 <Button Content="Добавить карту" Click="OpenAddMapWindow"/>
             </StackPanel>
         </Grid>
-        <local:MapControl Grid.Column="1" DataContext="{Binding Maps.CurrentItem}"/>
-
-        <ListView  ItemsSource="{Binding Maps.CurrentItem.Sensors}" Grid.Column="2" Margin="10">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Grid >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="50"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding SensName}" MouseDown="TextBlock_MouseDown"/>
-                        <Button Grid.Column="1" DataContext="{Binding}" Content="{Binding Address}" Click="Button_Click_1"  > </Button>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <DataGrid Grid.Column="3" ItemsSource="{Binding Maps.CurrentItem.Sensors}" IsEnabled="False">
-            
-            
-        </DataGrid>
+        <local:MapControl Grid.Column="1" DataContext="{Binding Maps.CurrentItem}" EnableEdit="True"/>
+        <Grid Grid.Column="2" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <ListView  ItemsSource="{Binding Maps.CurrentItem.Sensors}" >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding SensName}" MouseDown="TextBlock_MouseDown"/>
+                            <Button Grid.Column="1" DataContext="{Binding}" Content="{Binding Address}" Click="Button_Click_1"  ></Button>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackPanel Orientation="Vertical" Grid.Row="1" Margin="10">
+                <Button Content="Добавить датчик" Click="OpenAddSensorWindow"/>
+                <Button Content="Добавить датчики" Click="OpenAddSensorsWindow" IsEnabled="False"/>
+            </StackPanel>
+        </Grid>
+        <DataGrid Grid.Column="3" ItemsSource="{Binding Maps.CurrentItem.Sensors}" IsEnabled="True" />
     </Grid>
 
 </Window>

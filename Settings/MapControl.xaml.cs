@@ -22,7 +22,10 @@ namespace Settings
     /// </summary>
     public partial class MapControl : UserControl
     {
-        private Map map;
+        public bool EnableEdit { get; set; } = false;
+
+    private Map map;
+
         public MapControl()
         {
             InitializeComponent();
@@ -33,10 +36,13 @@ namespace Settings
         }
 
 
+
+
         private UIElement _lastClickedUIElement;
         private Point? _clickOffset;
         private void SensorControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (!EnableEdit) return;
             Console.WriteLine("down");
             _lastClickedUIElement = sender as UIElement;
             _clickOffset = e.GetPosition(_lastClickedUIElement);
@@ -44,6 +50,7 @@ namespace Settings
 
         private void SensorControl_MouseMove(object sender, MouseEventArgs e)
         {
+            if (!EnableEdit) return;
             if (_lastClickedUIElement == null)
                 return;
             if (e.GetPosition(_canvas).X < 0 || e.GetPosition(_canvas).Y < 0 || e.GetPosition(_canvas).X > _canvas.ActualWidth || e.GetPosition(_canvas).Y > _canvas.ActualHeight)
@@ -54,6 +61,7 @@ namespace Settings
 
         private void SensorControl_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (!EnableEdit) return;
             var f = (_lastClickedUIElement as SensorControl).DataContext as Sensor;
             f.X = e.GetPosition(_canvas).X - _clickOffset.Value.X;
             f.Y = e.GetPosition(_canvas).Y - _clickOffset.Value.Y;
@@ -62,6 +70,7 @@ namespace Settings
         }
         private void Sc_MouseLeave(object sender, MouseEventArgs e)
         {
+            if (!EnableEdit) return;
             if (_lastClickedUIElement == null)
                 return;
             if (e.GetPosition(_canvas).X < 0 || e.GetPosition(_canvas).Y < 0 || e.GetPosition(_canvas).X > _canvas.ActualWidth || e.GetPosition(_canvas).Y > _canvas.ActualHeight)

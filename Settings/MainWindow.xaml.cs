@@ -87,12 +87,15 @@ namespace Settings
         private void ChangeMap_Click(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog()==true)
-            {
-                var file = openFileDialog.FileName;
-                object dc = DataContext;
-            }
+            Map m = btn.DataContext as Map;
+            if (m == null)
+                throw new Exception("Это не карта ");
+            AddMapWindow chmd = new AddMapWindow(m.Path, m.MapName);
+            chmd.Owner = this;
+            chmd.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            chmd.ShowDialog();
+            m.Change(chmd.FileName,chmd.MapName);
+
         }
 
         private void OpenAddMapWindow(object sender, RoutedEventArgs e)
@@ -105,6 +108,28 @@ namespace Settings
                 return;
 
             MessageBox.Show(addMapWindow.FileName, addMapWindow.MapName);
+            Data.Data dt = (DataContext as Data.Data);
+            if (dt != null)
+                dt.AddMap(addMapWindow.FileName, addMapWindow.MapName);
+
+        }
+
+        private void OpenAddSensorWindow(object sender, RoutedEventArgs e)
+        {
+            Map currentMap = (DataContext as Data.Data).Maps.CurrentItem as Map;
+            AddSensorWindow sensorWindow = new AddSensorWindow();
+            sensorWindow.Map = currentMap;
+            sensorWindow.Owner = this;
+            sensorWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            sensorWindow.ShowDialog();
+            if (sensorWindow.DialogResult != true) return;
+
+            MessageBox.Show("Добавили датчик, обнови карту");
+            
+        }
+
+        private void OpenAddSensorsWindow(object sender, RoutedEventArgs e)
+        {
 
         }
     }

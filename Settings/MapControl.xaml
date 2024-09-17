@@ -19,7 +19,7 @@
                 </Grid>
             </Viewbox>
         </Border>
-        <StackPanel Orientation="Horizontal" Grid.Row="1" >
+        <StackPanel Orientation="Horizontal" Grid.Row="1"  Visibility="Hidden">
             <TextBlock >Hint:</TextBlock>
             <TextBlock x:Name="label"/>
         </StackPanel>

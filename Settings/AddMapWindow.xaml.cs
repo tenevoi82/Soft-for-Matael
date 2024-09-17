@@ -23,6 +23,38 @@ namespace Settings
     /// </summary>
     public partial class AddMapWindow : Window
     {
+        public AddMapWindow(string FilePath,string MapName)
+        {
+            FileName = FilePath;
+            this.MapName = MapName;
+            InitializeComponent();
+            txtName.Text = MapName;
+            try
+            {
+                BitmapImage im = new BitmapImage(new Uri(FilePath));
+                image.Source = im;
+            }
+            catch (Exception ex)
+            {
+                OpenFileDialog addmap = new OpenFileDialog();
+                addmap.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                addmap.Filter = "Файлы рисунков (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png";
+                if (addmap.ShowDialog() == true)
+                {
+                    try
+                    {
+                        BitmapImage im = new BitmapImage(new Uri(addmap.FileName));
+                        image.Source = im;
+                        FileName = addmap.FileName;
+                    }
+                    catch (Exception ex2)
+                    {
+                        MessageBox.Show(ex2.Message);
+                    }
+                }
+            }
+        }
+
         public AddMapWindow()
         {
             InitializeComponent();
@@ -37,7 +69,7 @@ namespace Settings
         private void AddMapWindow_Loaded(object sender, RoutedEventArgs e)
         {
             OpenFileDialog addmap = new OpenFileDialog();
-            addmap.Filter = "Файлы рисунков (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png|Все файлы (*.*)|*.*";
+            addmap.Filter = "Файлы рисунков (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png";
             if (addmap.ShowDialog() != true) return;
             FileName = addmap.FileName;
             this.Title = FileName;
@@ -63,9 +95,36 @@ namespace Settings
                 MessageBox.Show("Неверное название");
                 return;
             }
+            if (image.Source == null)
+            {
+                MessageBox.Show("Выберите файл карты");
+                return;
+            }
             MapName = txtName.Text;
             DialogResult = true;
             Close();   
+        }
+
+        private void ChangeMapFile(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog addmap = new OpenFileDialog();
+            addmap.Filter = "Файлы рисунков (*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png|Все файлы (*.*)|*.*";
+            if (addmap.ShowDialog() != true) return;
+            FileName = addmap.FileName;
+            this.Title = FileName;
+            try
+            {
+                BitmapImage im = new BitmapImage(new Uri(FileName));
+                image.Source = im;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                DialogResult = false;
+                Close();
+            }
+            txtName.Text = ClearExtension(addmap.SafeFileName);
         }
     }
 }

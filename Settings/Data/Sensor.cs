@@ -128,11 +128,11 @@ namespace Settings.Data
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
-                savetobase();
+                updatetobase();
             }
         }
 
-        private void savetobase()
+        private void updatetobase()
         {
             try
             {
@@ -142,6 +142,41 @@ namespace Settings.Data
                     using (var cmd = new SQLiteCommand($@"UPDATE Sensors SET Name = '{sensName}', Description = '{description}', Loop = '{loop}', Address = '{address}', Map = '{map}', X = '{Convert.ToInt32(x)}', Y = '{Convert.ToInt32(y)}' WHERE Id = '{id}' ;", connection))
                     {
                         cmd.ExecuteReader();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public void savetobase()
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(@"Data Source=C:\Users\Dmitrii\Desktop\db.db"))
+                {
+                    connection.Open();
+                    using (var cmd = new SQLiteCommand($@"INSERT INTO Sensors (
+                        Name,
+                        Description,
+                        Loop,
+                        Address,
+                        Map,
+                        X,
+                        Y
+                    )
+                    VALUES (
+                        '{SensName}',
+                        '{Description}',
+                        '{Loop}',
+                        '{Address}',
+                        '{Map}',
+                        '0',
+                        '0'
+                    );", connection))
+                    {
+                        cmd.ExecuteNonQuery();
                     }
                 }
             }

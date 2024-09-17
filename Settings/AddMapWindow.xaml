@@ -14,7 +14,14 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <Image  Margin="5"  Grid.Row="0" x:Name="image"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Image  Margin="5"  Grid.Row="0" x:Name="image" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+            <Button Click="ChangeMapFile" Grid.Row="1" Width="75">Изменить</Button>
+        </Grid>
         <StackPanel Grid.Row="1" Orientation="Vertical" Margin="10">
             <TextBlock HorizontalAlignment="Center" FontWeight="Bold" FontSize="36" Margin="0,0,0,20" >Введите название карты</TextBlock>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
