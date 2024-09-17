@@ -21,9 +21,6 @@ namespace Settings
     public partial class AlarmWindow : Window
     {
 
-        int l = 2;
-        int a = 4;
-
         public void Alarm(int loop, int address)
         {
             bool found = false;
@@ -31,11 +28,28 @@ namespace Settings
             {
                 foreach (Sensor sensor in map.Sensors)
                 {
-                    if (sensor.Address == a && sensor.Loop == l)
+                    if (sensor.Address == address && sensor.Loop == loop)
                     {
                         DataContext = map;
                         found = true;
                         sensor.CurrentState = Sensor.State.Alarm;
+                        break;
+                    }
+                }
+            }
+        }
+        public void Fault(int loop, int address)
+        {
+            bool found = false;
+            foreach (Data.Map map in D.Maps.SourceCollection)
+            {
+                foreach (Sensor sensor in map.Sensors)
+                {
+                    if (sensor.Address == address && sensor.Loop == loop)
+                    {
+                        DataContext = map;
+                        found = true;
+                        sensor.CurrentState = Sensor.State.Fault;
                         break;
                     }
                 }
@@ -48,11 +62,11 @@ namespace Settings
             {
                 foreach (Sensor sensor in map.Sensors)
                 {
-                    if (sensor.Address == a && sensor.Loop == l)
+                    if (sensor.Address == address && sensor.Loop == loop)
                     {
                         DataContext = map;
                         found = true;
-                        sensor.CurrentState = Sensor.State.Alarm;
+                        sensor.CurrentState = Sensor.State.StandBy;
                         break;
                     }
                 }
@@ -63,13 +77,24 @@ namespace Settings
         public AlarmWindow()
         {
             InitializeComponent();
+            Closing += AlarmWindow_Closing;
+            this.Topmost = true;
+            this.WindowStyle = WindowStyle.ToolWindow;
+            this.ResizeMode = ResizeMode.NoResize;
+            this.ShowInTaskbar = true;
+            this.WindowState = WindowState.Maximized;
 
             Journal.ItemsSource= new List<string>() { 
                 "02.21.2024 18:34:33 Тревога 9 этаж 1:33", 
                 "02.21.2024 18:39:35 Восстановление 9 этаж 1:33" , 
                 "02.21.2024 19:38:32 Тревога 9 этаж 1:37" ,
                 "02.21.2024 19:42:15 Восстановление 9 этаж 1:37" };
-            Alarm(2, 4);
+        }
+
+        private void AlarmWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            this.Visibility = Visibility.Hidden;
+            e.Cancel = true;
         }
     }
 }
