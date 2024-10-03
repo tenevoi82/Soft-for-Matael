@@ -74,11 +74,11 @@ namespace Settings
                     alarmWindow.Activate();
                 }
                 if(message.Type == "НР")
-                    alarmWindow.Fault(Convert.ToInt32(message.Loop), Convert.ToInt32(message.SensorNumber));
+                    alarmWindow.Fault(Convert.ToInt32(message.Loop), Convert.ToInt32(message.SensorNumber),message);
                 if (message.Type == "ТР")
-                    alarmWindow.Alarm(Convert.ToInt32(message.Loop), Convert.ToInt32(message.SensorNumber));
+                    alarmWindow.Alarm(Convert.ToInt32(message.Loop), Convert.ToInt32(message.SensorNumber), message);
                 if (message.Type == "ВС")
-                    alarmWindow.Restore(Convert.ToInt32(message.Loop), Convert.ToInt32(message.SensorNumber));
+                    alarmWindow.Restore(Convert.ToInt32(message.Loop), Convert.ToInt32(message.SensorNumber), message);
             });
 
             //;

@@ -136,7 +136,7 @@ namespace Settings.Data
         {
             try
             {
-                using (var connection = new SQLiteConnection(@"Data Source=C:\Users\Dmitrii\Desktop\db.db"))
+                using (var connection = new SQLiteConnection(@"Data Source=d:\db.db"))
                 {
                     connection.Open();
                     using (var cmd = new SQLiteCommand($@"UPDATE Sensors SET Name = '{sensName}', Description = '{description}', Loop = '{loop}', Address = '{address}', Map = '{map}', X = '{Convert.ToInt32(x)}', Y = '{Convert.ToInt32(y)}' WHERE Id = '{id}' ;", connection))
@@ -154,7 +154,7 @@ namespace Settings.Data
         {
             try
             {
-                using (var connection = new SQLiteConnection(@"Data Source=C:\Users\Dmitrii\Desktop\db.db"))
+                using (var connection = new SQLiteConnection(@"Data Source=d:\db.db"))
                 {
                     connection.Open();
                     using (var cmd = new SQLiteCommand($@"INSERT INTO Sensors (

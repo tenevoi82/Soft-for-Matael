@@ -67,7 +67,7 @@ namespace Settings.Data
 
             try
             {
-                using (var connection = new SQLiteConnection(@"Data Source=C:\Users\Dmitrii\Desktop\db.db"))
+                using (var connection = new SQLiteConnection(@"Data Source=d:\db.db"))
                 {
                     connection.Open();
 
@@ -93,7 +93,7 @@ namespace Settings.Data
             this.Id = Id;
             try
             {
-                using (var connection = new SQLiteConnection(@"Data Source=C:\Users\Dmitrii\Desktop\db.db"))
+                using (var connection = new SQLiteConnection(@"Data Source=d:\db.db"))
                 {
                     connection.Open();
 

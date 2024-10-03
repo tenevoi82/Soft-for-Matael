@@ -46,7 +46,7 @@
                 <RowDefinition/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <ListView  ItemsSource="{Binding Maps.CurrentItem.Sensors}" >
+            <ListView  ItemsSource="{Binding Maps.CurrentItem.Sensors}"  >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid >

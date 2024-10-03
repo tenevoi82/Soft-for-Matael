@@ -21,7 +21,7 @@ namespace Settings
     public partial class AlarmWindow : Window
     {
 
-        public void Alarm(int loop, int address)
+        public void Alarm(int loop, int address, hexdata message)
         {
             bool found = false;
             foreach (Data.Map map in D.Maps.SourceCollection)
@@ -33,12 +33,16 @@ namespace Settings
                         DataContext = map;
                         found = true;
                         sensor.CurrentState = Sensor.State.Alarm;
+                        MessageWindow mw = new MessageWindow(DateTime.Now.ToString() + "\r\n" + message.Caption + " " + message.SensorName);
+                        mw.Owner = this;
+                        mw.Show();
                         break;
                     }
                 }
+                if (found) break;
             }
         }
-        public void Fault(int loop, int address)
+        public void Fault(int loop, int address, hexdata message)
         {
             bool found = false;
             foreach (Data.Map map in D.Maps.SourceCollection)
@@ -50,12 +54,16 @@ namespace Settings
                         DataContext = map;
                         found = true;
                         sensor.CurrentState = Sensor.State.Fault;
+                        MessageWindow mw = new MessageWindow(DateTime.Now.ToString() + "\r\n" + message.Caption + " " + message.SensorName);
+                        mw.Owner = this;
+                        mw.Show();
                         break;
                     }
                 }
+                if (found) break;
             }
         }
-        public void Restore(int loop, int address)
+        public void Restore(int loop, int address, hexdata message)
         {
             bool found = false;
             foreach (Data.Map map in D.Maps.SourceCollection)
@@ -67,9 +75,13 @@ namespace Settings
                         DataContext = map;
                         found = true;
                         sensor.CurrentState = Sensor.State.StandBy;
+                        MessageWindow mw = new MessageWindow(DateTime.Now.ToString() + "\r\n" + message.Caption + " " + message.SensorName);
+                        mw.Owner = this;
+                        mw.Show();
                         break;
                     }
                 }
+                if (found) break;
             }
         }
 
@@ -85,10 +97,10 @@ namespace Settings
             this.WindowState = WindowState.Maximized;
 
             Journal.ItemsSource= new List<string>() { 
-                "02.21.2024 18:34:33 Тревога 9 этаж 1:33", 
-                "02.21.2024 18:39:35 Восстановление 9 этаж 1:33" , 
-                "02.21.2024 19:38:32 Тревога 9 этаж 1:37" ,
-                "02.21.2024 19:42:15 Восстановление 9 этаж 1:37" };
+                "....", 
+                "...." , 
+                "...." ,
+                "...." };
         }
 
         private void AlarmWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
